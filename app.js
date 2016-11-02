@@ -75,6 +75,9 @@ app.injectIO = function (io) {
     socket.on("disconnect", function ( ) {
       console.log("A user disconnected")
     })
+    socket.on("user.chat",function(data){
+      io.emit("user.chat",data)
+    })
   })
   SocketServer.injectIO(io)
 }

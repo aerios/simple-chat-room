@@ -18,10 +18,23 @@ block script
 				var str = "User "+userData.username+" has left the application!"
 				$("#member").append("<div>"+str+"</div>")
 			})
+			socket.on("user.chat",function (chatData){
+				var $member = $("#member");
+				var user = chatData.user;
+				var content = chatData.content;
+				var str = "User "+user.username+" said : "+content
+				$member.append("<div>"+str+"</div>")
+			})
 			$("#send-button").click(function(e){
 				e.preventDefault()
-				var str = $("textarea").value()
+				var $textarea = $("textarea")
+				var str = $textarea.val()
 				console.log("Here chat",str)
+				$textarea.val("")
+				socket.emit("user.chat",{
+					user : user,
+					content : str
+				})
 			})
 		})
 		
