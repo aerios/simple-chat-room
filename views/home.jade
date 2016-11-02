@@ -1,0 +1,37 @@
+extends layout
+
+block script
+	script.
+		var user = { "user_id" : "#{user.id}", "username" : "#{user.username}", "timestamp": "#{user.timestamp}" }
+	script(src="https://code.jquery.com/jquery-1.12.4.min.js")
+	script(src="/socket.io/socket.io.js")
+	script.
+		$(document).ready(function(){
+			var socket = io()
+			socket.on("user.join", function (userData) {
+				console.log("user join",userData)
+				var str = "User "+userData.username+" has join the application!"
+				$("#member").append("<div>"+str+"</div>")
+			})
+			socket.on("user.leave", function (userData) {
+				console.log("user leave",userData)
+				var str = "User "+userData.username+" has left the application!"
+				$("#member").append("<div>"+str+"</div>")
+			})
+			$("#send-button").click(function(e){
+				e.preventDefault()
+				var str = $("textarea").value()
+				console.log("Here chat",str)
+			})
+		})
+		
+block content
+	h1= title
+	h2 Welcome #{user.username} 
+		a(href="/users/logout/") Logout
+	#chatbox
+		textarea
+		input(type='button',name='submit',value="Send",id="send-button")
+	#member
+
+  
